@@ -41,4 +41,14 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+
+    public array $userLogin = [
+        "email" => "required|valid_email",
+        "password" => "required"
+    ];
+    public array $userRegister = [
+        "username" => "required|is_unique[users.username]",
+        "email" => "required|valid_email|is_unique[auth_identities.secret]",
+        "password" => "required"
+    ];
 }

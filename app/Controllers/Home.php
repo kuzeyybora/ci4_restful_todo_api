@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Constants\TranslationKeys;
 use App\Services\RedisService;
 class Home extends BaseController
 {
@@ -9,10 +10,10 @@ class Home extends BaseController
 
     public function __construct()
     {
-        $this->redisService = new RedisService();
+        helper("response");
     }
     public function index()
     {
-        echo $this->redisService->ping();
+        return response_success(message: TranslationKeys::CREATE_SUCCESS);
     }
 }

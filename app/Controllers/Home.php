@@ -2,10 +2,17 @@
 
 namespace App\Controllers;
 
+use App\Services\RedisService;
 class Home extends BaseController
 {
-    public function index(): string
+    protected RedisService $redisService;
+
+    public function __construct()
     {
-        return view('welcome_message');
+        $this->redisService = new RedisService();
+    }
+    public function index()
+    {
+        echo $this->redisService->ping();
     }
 }

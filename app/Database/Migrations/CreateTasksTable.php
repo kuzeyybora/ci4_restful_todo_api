@@ -5,30 +5,29 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\RawSql;
 
-class CreateTranslationsTable extends Migration
+class CreateTasksTable extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id' => [
-                'type' => 'INT',
-                'unsigned' => true,
+            'id'          => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+                'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'language_code' => [
-                'type' => 'VARCHAR',
-                'constraint' => '10',
-            ],
-            'key_name' => [
-                'type' => 'VARCHAR',
+            'title'       => [
+                'type'       => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'value' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
+            'description' => [
+                'type'       => 'TEXT',
+                'null'       => true,
             ],
-            'status_code' => [
-                'type' => 'TEXT',
+            'status'      => [
+                'type'       => 'ENUM',
+                'constraint' => ['pending', 'in_progress', 'completed'],
+                'default'    => 'pending',
             ],
             'created_at' => [
                 'type'       => 'TIMESTAMP',
@@ -41,13 +40,14 @@ class CreateTranslationsTable extends Migration
                 'default'    => new RawSql('CURRENT_TIMESTAMP'),
                 'on_update'  => new RawSql('CURRENT_TIMESTAMP'),
             ],
-        ]);
-        $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('translations');
+    ]);
+
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('tasks');
     }
 
     public function down()
     {
-        $this->forge->dropTable('translations');
+        $this->forge->dropTable('tasks');
     }
 }

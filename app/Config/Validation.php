@@ -42,13 +42,18 @@ class Validation extends BaseConfig
     // Rules
     // --------------------------------------------------------------------
 
-    public array $userLogin = [
-        "email" => "required|valid_email",
+    public array $user_login = [
+        "email" => "required|valid_email|min_length[5]|max_length[50]",
         "password" => "required"
     ];
-    public array $userRegister = [
+    public array $user_register = [
         "username" => "required|is_unique[users.username]",
-        "email" => "required|valid_email|is_unique[auth_identities.secret]",
+        "email" => "required|valid_email|is_unique[auth_identities.secret]|min_length[5]|max_length[50]",
         "password" => "required"
+    ];
+    public array $task_create_rules = [
+        'title' => 'required|min_length[3]|max_length[255]',
+        'description' => 'required|min_length[3]',
+        'status' => 'required|in_list[pending,in_progress,completed]'
     ];
 }

@@ -14,6 +14,6 @@ class Home extends BaseController
     }
     public function index()
     {
-        return response_success(message: TranslationKeys::CREATE_SUCCESS);
+        return response_success(message: TranslationKeys::LANGUAGE_UNSUPPORTED);
     }
 }

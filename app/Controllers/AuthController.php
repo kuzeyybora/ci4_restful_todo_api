@@ -6,39 +6,20 @@ use App\Constants\TranslationKeys;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Shield\Entities\User;
 use CodeIgniter\Shield\Models\UserModel;
+use App\Services\ValidationService;
 
 class AuthController extends BaseController
 {
+    public ValidationService $validationService;
     public function __construct()
     {
-    }
-    public function sanitizeInput(array|string $input): array|string
-    {
-        return is_array($input)
-            ? array_map([$this, 'sanitizeInput'], $input)
-            : htmlspecialchars(strip_tags($input), ENT_QUOTES, 'UTF-8');
-    }
-
-    protected function validateAndSanitize(array $data, string $validationRule): object
-    {
-        $validation = service("validation");
-        $sanitizedData = $this->sanitizeInput($data);
-        $rules = config("validation")->$validationRule;
-
-        $isValid = $validation->setRules($rules)->run($sanitizedData);
-
-        return (object) [
-            'status' => (bool)$isValid,
-            'data' => $isValid ? $sanitizedData : [],
-            'errors' => $isValid ? [] : $validation->getErrors()
-        ];
-
+        $this->validationService = new ValidationService();
     }
 
     public function login(): ResponseInterface
     {
         if (auth()->loggedIn()) { auth()->logout(); }
-        $requestData = $this->validateAndSanitize($this->request->getJSON(true), 'userLogin');
+        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'user_login');
 
         if (!$requestData->status) {
             return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
@@ -63,7 +44,7 @@ class AuthController extends BaseController
     }
     public function register(): ResponseInterface
     {
-        $requestData = $this->validateAndSanitize($this->request->getJSON(true), 'userRegister');
+        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'user_register');
 
         if (!$requestData->status) {
             return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);

@@ -8,7 +8,7 @@ class TranslationModel extends Model
 {
     protected $table = 'translations';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['key_name', 'language_code', 'value', 'status_code', 'created_at', 'updated_at'];
+    protected $allowedFields = ['key_name', 'language_code', 'value', 'status_code'];
     protected $returnType = "object";
 
     public function getTranslation(string $key, string $languageCode): ?array

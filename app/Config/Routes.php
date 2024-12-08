@@ -7,9 +7,11 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->get('/tasks', 'TaskController::index');
-$routes->get('/tasks/(:num)', 'TaskController::show/$1');
-$routes->post('/tasks', 'TaskController::create');
+$routes->resource('tasks', ['controller' => 'TaskController']);
+//
+//$routes->get('/tasks', 'TaskController::index');
+//$routes->get('/tasks/(:num)', 'TaskController::show/$1');
+//$routes->post('/tasks', 'TaskController::create');
 
 // service('auth')->routes($routes);
 

@@ -44,7 +44,7 @@ class Validation extends BaseConfig
 
     public array $user_login = [
         "email" => "required|valid_email|min_length[5]|max_length[50]",
-        "password" => "required"
+        "password" => "required|min_length[5]|max_length[20]",
     ];
     public array $user_register = [
         "username" => "required|is_unique[users.username]",

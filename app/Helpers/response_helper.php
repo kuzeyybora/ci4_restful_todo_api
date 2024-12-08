@@ -19,7 +19,7 @@ function response_success(array|object $data = null, string $message = 'RESPONSE
     ]);
 }
 
-function response_fail(string $message = 'RESPONSE_UNSUCCESSFULLY_MESSAGE', array|object $data = null, int $code = 200): ResponseInterface
+function response_fail(string $message = 'RESPONSE_UNSUCCESSFULLY_MESSAGE', array|object $data = null, int $code = 400): ResponseInterface
 {
     $responseData = get_message($message);
 

@@ -14,6 +14,8 @@ class Home extends BaseController
     }
     public function index()
     {
-        return response_success(message: TranslationKeys::LANGUAGE_UNSUPPORTED);
+        $testModel = model("TaskUserModel");
+        $test = $testModel->getUserTasks(auth()->id());
+        return response_success($test, TranslationKeys::LANGUAGE_UNSUPPORTED);
     }
 }

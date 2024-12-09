@@ -113,7 +113,7 @@ class TaskController extends BaseController
         }
 
         return $this->taskModel->delete($task_id)
-            ? response_success(message: TranslationKeys::UPDATE_SUCCESS)
-            : response_fail(message: TranslationKeys::UPDATE_FAIL);
+            ? response_success(message: TranslationKeys::DELETE_SUCCESS)
+            : response_fail(message: TranslationKeys::DELETE_FAIL);
     }
 }

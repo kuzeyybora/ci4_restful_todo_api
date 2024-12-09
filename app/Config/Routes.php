@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->resource('tasks', ['controller' => 'TaskController']);
+$routes->resource('tasks', ['controller' => 'TaskController', 'filter' => 'apiAuth']);
 //
 //$routes->get('/tasks', 'TaskController::index');
 //$routes->get('/tasks/(:num)', 'TaskController::show/$1');

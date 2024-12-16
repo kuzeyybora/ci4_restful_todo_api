@@ -101,7 +101,7 @@ class TaskController extends BaseController
 
     public function delete(int $task_id = 0)
     {
-        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'task_create_rules');
+        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'task_delete_rules');
 
         if (!$requestData->status) {
             return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);

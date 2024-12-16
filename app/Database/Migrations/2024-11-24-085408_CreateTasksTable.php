@@ -5,7 +5,7 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\RawSql;
 
-class CreateTaskUserTable extends Migration
+class CreateTasksTable extends Migration
 {
     public function up()
     {
@@ -16,15 +16,18 @@ class CreateTaskUserTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'user_id'     => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'unsigned'   => true,
+            'title'       => [
+                'type'       => 'VARCHAR',
+                'constraint' => '255',
             ],
-            'task_id'     => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'unsigned'   => true,
+            'description' => [
+                'type'       => 'TEXT',
+                'null'       => true,
+            ],
+            'status'      => [
+                'type'       => 'ENUM',
+                'constraint' => ['pending', 'in_progress', 'completed'],
+                'default'    => 'pending',
             ],
             'created_at' => [
                 'type'       => 'TIMESTAMP',
@@ -40,13 +43,11 @@ class CreateTaskUserTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('task_id', 'tasks', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('task_user');
+        $this->forge->createTable('tasks');
     }
 
     public function down()
     {
-        $this->forge->dropTable('task_user');
+        $this->forge->dropTable('tasks');
     }
 }

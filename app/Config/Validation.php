@@ -56,4 +56,9 @@ class Validation extends BaseConfig
         'description' => 'required|min_length[3]',
         'status' => 'required|in_list[pending,in_progress,completed]'
     ];
+    public array $task_delete_rules = [
+        'title' => 'required|min_length[3]|max_length[255]',
+        'description' => 'required|min_length[3]',
+        'status' => 'required|in_list[pending,in_progress,completed]'
+    ];
 }

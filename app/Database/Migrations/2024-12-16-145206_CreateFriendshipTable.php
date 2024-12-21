@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class CreateFriendshipTable extends Migration
 {
@@ -31,12 +32,15 @@ class CreateFriendshipTable extends Migration
                 'default'        => 'pending',
             ],
             'created_at' => [
-                'type'           => 'DATETIME',
-                'null'           => true,
+                'type'       => 'TIMESTAMP',
+                'null'       => true,
+                'default'    => new RawSql('CURRENT_TIMESTAMP'),
             ],
             'updated_at' => [
-                'type'           => 'DATETIME',
-                'null'           => true,
+                'type'       => 'TIMESTAMP',
+                'null'       => true,
+                'default'    => new RawSql('CURRENT_TIMESTAMP'),
+                'on_update'  => new RawSql('CURRENT_TIMESTAMP'),
             ],
         ]);
         $this->forge->addPrimaryKey('id');

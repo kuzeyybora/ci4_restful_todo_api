@@ -9,7 +9,7 @@ class TaskUserModel extends Model
     protected $table            = 'task_user';
     protected $primaryKey       = 'id';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['user_id', 'task_id'];
+    protected $allowedFields    = ['user_id', 'task_id', 'task_owner_id'];
 
     public function getUserTasks($user_id)
     {

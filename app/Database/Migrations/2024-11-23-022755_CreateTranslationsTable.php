@@ -29,6 +29,7 @@ class CreateTranslationsTable extends Migration
             ],
             'status_code' => [
                 'type' => 'TEXT',
+                'default' => 'pending'
             ],
             'created_at' => [
                 'type'       => 'TIMESTAMP',

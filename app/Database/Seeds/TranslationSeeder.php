@@ -567,7 +567,97 @@ class TranslationSeeder extends Seeder
                 "key_name" => "RESPONSE_DEFAULT_ERROR_MESSAGE",
                 "value" => "Ein Fehler ist aufgetreten, bitte versuchen Sie es später erneut.",
                 "status_code" => "500"
-            ]
+            ],
+            [
+                "language_code" => "tr",
+                "key_name" => "RESPONSE_FRIEND_NOT_FOUND_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Kullanıcı arkadaş listenizde bulunamadı.",
+                "status_code" => "404"
+            ],
+            [
+                "language_code" => "en",
+                "key_name" => "RESPONSE_FRIEND_NOT_FOUND_UNSUCCESSFULLY_MESSAGE",
+                "value" => "User not found in your friend list.",
+                "status_code" => "404"
+            ],
+            [
+                "language_code" => "de",
+                "key_name" => "RESPONSE_FRIEND_NOT_FOUND_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Benutzer wurde nicht in deiner Freundesliste gefunden.",
+                "status_code" => "404"
+            ],
+            [
+                "language_code" => "tr",
+                "key_name" => "RESPONSE_SELF_REQUEST_DENIED_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Kendinize arkadaşlık isteği gönderemezsiniz.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "en",
+                "key_name" => "RESPONSE_SELF_REQUEST_DENIED_UNSUCCESSFULLY_MESSAGE",
+                "value" => "You cannot send a friendship request to yourself.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "de",
+                "key_name" => "RESPONSE_SELF_REQUEST_DENIED_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Du kannst keine Freundschaftsanfrage an dich selbst senden.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "tr",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_SENT_SUCCESSFULLY_MESSAGE",
+                "value" => "Arkadaşlık isteğiniz başarıyla gönderildi!",
+                "status_code" => "200"
+            ],
+            [
+                "language_code" => "en",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_SENT_SUCCESSFULLY_MESSAGE",
+                "value" => "Your friendship request has been successfully sent!",
+                "status_code" => "200"
+            ],
+            [
+                "language_code" => "de",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_SENT_SUCCESSFULLY_MESSAGE",
+                "value" => "Ihre Freundschaftsanfrage wurde erfolgreich gesendet!",
+                "status_code" => "200"
+            ],
+            [
+                "language_code" => "tr",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_SENT_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Arkadaşlık isteği gönderilirken bir hata oluştu.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "en",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_SENT_UNSUCCESSFULLY_MESSAGE",
+                "value" => "An error occurred while sending the friendship request.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "de",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_SENT_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Beim Senden der Freundschaftsanfrage ist ein Fehler aufgetreten.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "tr",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_ALREADY_SENT_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Arkadaşlık isteğiniz zaten gönderildi.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "en",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_ALREADY_SENT_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Your friendship request has already been sent.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "de",
+                "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_ALREADY_SENT_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Ihre Freundschaftsanfrage wurde bereits gesendet.",
+                "status_code" => "400"
+            ],
         ];
 
         $this->db->table('translations')->insertBatch($data);

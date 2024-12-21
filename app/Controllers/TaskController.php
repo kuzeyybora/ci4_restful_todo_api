@@ -29,7 +29,7 @@ class TaskController extends BaseController
         $this->taskUserModel = model("TaskUserModel");
     }
 
-    public function index()
+    public function index(): ResponseInterface
     {
         $query = $this->taskUserModel->getUserTasks(auth()->id());
 
@@ -38,7 +38,7 @@ class TaskController extends BaseController
             : response_fail(message: TranslationKeys::NOT_FOUND);
     }
 
-    public function show(int $task_id = 0)
+    public function show(int $task_id = 0): ResponseInterface
     {
         $query = $this->taskUserModel->getUserTask(auth()->id(), $task_id);
 
@@ -47,7 +47,7 @@ class TaskController extends BaseController
             : response_fail(message: TranslationKeys::NOT_FOUND);
     }
 
-    public function create()
+    public function create(): ResponseInterface
     {
         $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'task_create_rules');
 
@@ -65,7 +65,8 @@ class TaskController extends BaseController
 
         $taskUser_status = $this->taskUserModel->save([
             'task_id' => $task_id,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
+            'task_owner_id' => auth()->id()
         ]);
 
         if ($task_status && $taskUser_status) {
@@ -75,7 +76,7 @@ class TaskController extends BaseController
         }
     }
 
-    public function update(int $task_id = 0)
+    public function update(int $task_id = 0): ResponseInterface
     {
         $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'task_create_rules');
 
@@ -99,13 +100,8 @@ class TaskController extends BaseController
             : response_fail(message: TranslationKeys::UPDATE_FAIL);
     }
 
-    public function delete(int $task_id = 0)
+    public function delete(int $task_id = 0): ResponseInterface
     {
-        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'task_delete_rules');
-
-        if (!$requestData->status) {
-            return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
-        }
         $task = $this->taskUserModel->getUserTask(auth()->id(), $task_id);
 
         if (!$task) {

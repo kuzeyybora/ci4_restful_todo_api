@@ -61,4 +61,11 @@ class Validation extends BaseConfig
         'description' => 'required|min_length[3]',
         'status' => 'required|in_list[pending,in_progress,completed]'
     ];
+    public array $friendship_request = [
+      'friendship_id' => 'required|integer|min_length[1]|max_length[20]',
+    ];
+    public array $task_assign_rules = [
+      'friend_id' => 'required|integer|min_length[1]|max_length[20]',
+      'task_id' => 'required|integer|min_length[1]|max_length[20]',
+    ];
 }

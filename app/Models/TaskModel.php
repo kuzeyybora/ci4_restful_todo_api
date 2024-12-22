@@ -10,4 +10,5 @@ class TaskModel extends Model
     protected $primaryKey       = 'id';
     protected $returnType       = 'object';
     protected $allowedFields    = ['title', 'description', 'status'];
+
 }

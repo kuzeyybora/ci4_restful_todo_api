@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 $routes->resource('tasks', ['controller' => 'TaskController', 'filter' => 'apiAuth']);
+$routes->post('tasks/assignTask', 'TaskController::assignTask', ['filter' => 'apiAuth']);
 
 $routes->group('friendship', ['filter' => 'apiAuth'], function ($routes) {
     $routes->post('send-request/(:num)', 'FriendshipController::sendRequest/$1');

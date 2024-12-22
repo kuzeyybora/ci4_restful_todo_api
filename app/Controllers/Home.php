@@ -11,6 +11,7 @@ class Home extends BaseController
     public function __construct()
     {
         helper("response");
+        helper('validation');
     }
     public function index()
     {

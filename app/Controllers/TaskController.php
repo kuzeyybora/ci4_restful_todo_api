@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Constants\TranslationKeys;
 use App\Controllers\BaseController;
+use App\Models\FriendshipModel;
 use App\Models\TaskModel;
 use App\Models\TaskUserModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -21,12 +22,18 @@ class TaskController extends BaseController
      */
     private $taskUserModel;
 
+    /**
+     * @var FriendshipModel
+     */
+    private $friendshipModel;
+
     private $validationService;
     public function __construct()
     {
         $this->validationService = new ValidationService();
         $this->taskModel = model("TaskModel");
         $this->taskUserModel = model("TaskUserModel");
+        $this->friendshipModel = model("FriendshipModel");
     }
 
     public function index(): ResponseInterface
@@ -111,5 +118,24 @@ class TaskController extends BaseController
         return $this->taskModel->delete($task_id)
             ? response_success(message: TranslationKeys::DELETE_SUCCESS)
             : response_fail(message: TranslationKeys::DELETE_FAIL);
+    }
+    public function assignTask(): ResponseInterface
+    {
+        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'task_assign_rules');
+
+        if (!$requestData->status) {
+            return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
+        }
+        $checkFriendship = $this->friendshipModel->checkFriendship(auth()->getUser()->id, $requestData->data['friend_id']);
+        $checkTask = $this->taskModel->find($requestData->data['task_id']);
+        if (!$checkFriendship || !$checkTask)
+        {
+            return response_fail(message: TranslationKeys::NOT_FOUND);
+        }
+        $assign = $this->taskUserModel->assignTask($requestData->data['task_id'], auth()->getUser()->id, $requestData->data['friend_id']);
+
+        return $assign
+            ? response_success()
+            : response_fail();
     }
 }

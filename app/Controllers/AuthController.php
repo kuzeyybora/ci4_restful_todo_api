@@ -4,16 +4,15 @@ namespace App\Controllers;
 
 use App\Constants\TranslationKeys;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Shield\Entities\User;
-use CodeIgniter\Shield\Models\UserModel;
-use App\Services\ValidationService;
 
 class AuthController extends BaseController
 {
-    public ValidationService $validationService;
+    public object $validationService;
+    public object $authService;
     public function __construct()
     {
-        $this->validationService = new ValidationService();
+        $this->validationService = service('validationService');
+        $this->authService = service('authService');
     }
 
     public function login(): ResponseInterface
@@ -25,22 +24,10 @@ class AuthController extends BaseController
             return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
         }
 
-        $credentials = [
-            "email" => $requestData->data["email"],
-            "password" => $requestData->data["password"],
-        ];
+        return ($loginAttempt = $this->authService->login($requestData->data['email'], $requestData->data['password']))
+            ? response_success(['token' => $loginAttempt],TranslationKeys::LOGIN_SUCCESS)
+            : response_fail(message: TranslationKeys::LOGIN_FAIL);
 
-        $loginAttempt = auth()->attempt($credentials);
-
-        if (!$loginAttempt->isOK()) {
-            return response_fail(message: TranslationKeys::LOGIN_FAIL);
-        } else {
-            $userObject = new UserModel();
-            $userData = $userObject->findById(auth()->id());
-            $token = $userData->generateAccessToken("PAT");
-            $auth_token = $token->raw_token;
-            return response_success(['token' => $auth_token],TranslationKeys::LOGIN_SUCCESS);
-        }
     }
     public function register(): ResponseInterface
     {
@@ -50,16 +37,9 @@ class AuthController extends BaseController
             return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
         }
 
-        $userObject = new UserModel();
-
-        $userEntityObject =  new User([
-            "username" => $requestData->data["username"],
-            "email" => $requestData->data["email"],
-            "password" => $requestData->data["password"],
-        ]);
-
-        $userObject->save($userEntityObject);
-        return response_success(message: TranslationKeys::REGISTER_SUCCESS);
+        return $this->authService->register($requestData->data["username"], $requestData->data["email"], $requestData->data["password"])
+            ? response_success(message: TranslationKeys::REGISTER_SUCCESS)
+            : response_fail(TranslationKeys::REGISTER_FAIL);
     }
     public function logout(): ResponseInterface
     {

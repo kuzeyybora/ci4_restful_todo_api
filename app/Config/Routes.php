@@ -13,8 +13,8 @@ $routes->post('tasks/assignTask', 'TaskController::assignTask', ['filter' => 'ap
 $routes->group('friendship', ['filter' => 'apiAuth'], function ($routes) {
     $routes->post('send-request/(:num)', 'FriendshipController::sendRequest/$1');
     $routes->get('incoming-requests', 'FriendshipController::listIncomingRequests');
-    $routes->post('accept-request', 'FriendshipController::acceptFriendship');
-    $routes->post('reject-request', 'FriendshipController::rejectFriendship');
+    $routes->post('accept-request/(:num)', 'FriendshipController::acceptFriendship/$1');
+    $routes->post('reject-request/(:num)', 'FriendshipController::rejectFriendship/$1');
     $routes->get('friends', 'FriendshipController::listFriendships');
 });
 // $routes->get('mutual-friends', 'FriendshipController::listMutualFriends');

@@ -3,93 +3,91 @@
 namespace App\Controllers;
 
 use App\Constants\TranslationKeys;
-use App\Controllers\BaseController;
-use App\Models\FriendshipModel;
-use App\Services\ValidationService;
+use App\Services\FriendshipService;
 use CodeIgniter\HTTP\ResponseInterface;
 
+/**
+ * Class FriendshipController
+ *
+ * Handles friendship-related actions such as sending requests,
+ * listing requests, accepting or rejecting requests, and listing friendships.
+ */
 class FriendshipController extends BaseController
 {
     /**
-     * @var FriendshipModel
+     * @var FriendshipService $friendshipService Service for handling friendship operations
      */
-    private $friendshipModel;
+    private object $friendshipService;
 
-    private $validationService;
-
+    /**
+     * FriendshipController constructor.
+     * Initializes the FriendshipService instance.
+     */
     public function __construct()
     {
-        $this->friendshipModel = model("FriendshipModel");
-        $this->validationService = new ValidationService();
+        $this->friendshipService = service('friendshipService');
     }
+
+    /**
+     * Sends a friendship request to the specified user.
+     *
+     * @param int $targetUserId ID of the user to send the friendship request to
+     * @return ResponseInterface Response indicating success or failure
+     */
     public function sendRequest(int $targetUserId): ResponseInterface
     {
-        if (!auth()->getProvider()->findById($targetUserId)) {
-            return response_fail(TranslationKeys::NOT_FOUND);
-        }
-        if (auth()->getUser()->id == $targetUserId) {
-            return response_fail(TranslationKeys::SELF_REQUEST_DENIED);
-        }
-
-        $existingRequest = $this->friendshipModel->where([
-            'user_id' => auth()->getUser()->id, 'friend_id' => $targetUserId
-        ])->orWhere([
-            'user_id' => $targetUserId, 'friend_id' => auth()->getUser()->id
-        ])->first();
-
-        if ($existingRequest) {
-            return response_fail(TranslationKeys::REQUEST_ALREADY_SENT);
-        }
-
-        $friendshipRequest = $this->friendshipModel->insert([
-           'user_id' => auth()->getUser()->id,
-           'friend_id' => $targetUserId
-        ]);
-
-        return $friendshipRequest
+        return ($friendshipRequest = $this->friendshipService->sendFriendRequest($targetUserId))
             ? response_success(message: TranslationKeys::REQUEST_SUCCESS)
             : response_fail(TranslationKeys::REQUEST_FAIL);
     }
+
+    /**
+     * Lists all incoming friendship requests for the authenticated user.
+     *
+     * @return ResponseInterface Response containing a list of incoming requests or a failure message
+     */
     public function listIncomingRequests(): ResponseInterface
     {
-        $incomingRequests = $this->friendshipModel->incomingFriendRequest(auth()->getUser()->id);
-
-        return $incomingRequests
+        return ($incomingRequests = $this->friendshipService->listIncomingFriendRequests())
             ? response_success($incomingRequests)
             : response_fail(TranslationKeys::NOT_FOUND);
-
     }
-    public function acceptFriendship(): ResponseInterface
+
+    /**
+     * Accepts a friendship request by ID.
+     *
+     * @param int $request_id ID of the friendship request to accept
+     * @return ResponseInterface Response indicating success or failure
+     */
+    public function acceptFriendship(int $request_id): ResponseInterface
     {
-        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'friendship_request');
-
-        if (!$requestData->status) {
-            return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
-        }
-
-        return $this->friendshipModel->acceptOrRejectRequest($requestData->data['friendship_id'], auth()->getUser()->id,true)
+        return $this->friendshipService->acceptOrRejectFriendshipRequest($request_id, true)
             ? response_success()
             : response_fail();
     }
-    public function rejectFriendship(): ResponseInterface
+
+    /**
+     * Rejects a friendship request by ID.
+     *
+     * @param int $request_id ID of the friendship request to reject
+     * @return ResponseInterface Response indicating success or failure
+     */
+    public function rejectFriendship(int $request_id): ResponseInterface
     {
-        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'friendship_request');
-
-        if (!$requestData->status) {
-            return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
-        }
-
-        return $this->friendshipModel->acceptOrRejectRequest($requestData->data['friendship_id'], auth()->getUser()->id,false)
+        return $this->friendshipService->acceptOrRejectFriendshipRequest($request_id, false)
             ? response_success()
             : response_fail();
     }
+
+    /**
+     * Lists all friendships for the authenticated user.
+     *
+     * @return ResponseInterface Response containing a list of friendships or a failure message
+     */
     public function listFriendships(): ResponseInterface
     {
-        $friendships = $this->friendshipModel->getAcceptedFriends(auth()->getUser()->id);
-        // can be simplified
-        return $friendships
+        return ($friendships = $this->friendshipService->listFriendships())
             ? response_success($friendships)
             : response_fail();
-
     }
 }

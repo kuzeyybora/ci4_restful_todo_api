@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Services\AuthService;
+use App\Services\FriendshipService;
 use App\Services\TaskService;
 use App\Services\ValidationService;
 use CodeIgniter\Config\BaseService;
@@ -31,13 +33,22 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
-    public static function validationService()
+    public static function validationService(): validationService
     {
         return new ValidationService();
     }
 
-    public static function taskService()
+    public static function taskService(): TaskService
     {
         return new TaskService();
+    }
+    public static function friendshipService(): friendshipService
+    {
+        return new FriendshipService();
+    }
+
+    public static function authService(): AuthService
+    {
+        return new AuthService();
     }
 }

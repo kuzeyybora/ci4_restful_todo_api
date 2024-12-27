@@ -22,7 +22,7 @@ class FriendshipModel extends Model
             ->groupEnd()
             ->findAll();
     }
-    public function incomingFriendRequest($user_id)
+    public function incomingFriendRequest($user_id): ?array
     {
         return $this->select('id, user_id, friend_id')->where([
             'friend_id' => $user_id,

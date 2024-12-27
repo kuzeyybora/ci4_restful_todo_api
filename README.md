@@ -1,68 +1,71 @@
-# CodeIgniter 4 Application Starter
+# CodeIgniter 4 Restful Todo Api Project
 
-## What is CodeIgniter?
+CodeIgniter 4 Restful Todo API projesi, kullanıcıların görevlerini yönetebileceği ve arkadaşlarına görev atayabileceği bir API sunar. Kullanıcılar birbirlerine arkadaşlık istekleri gönderebilir, kabul edebilir veya reddedebilirler.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Projede Shield kullanılarak güvenli kimlik doğrulama ve yetkilendirme sağlanmış, kullanıcı verileri güvence altına alınmıştır. Multilingual destekle Türkçe, İngilizce ve Almanca dillerinde hizmet verilmektedir.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+Redis, uygulamanın performansını artırmak için kullanılırken, MongoDB log yönetimi için tercih edilmiştir. Bu sayede hızlı veri erişimi ve etkin log depolama sağlanmaktadır.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Temel Özellikler
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- **Arkadaşlık Sistemi**: Kullanıcılar birbirlerine arkadaşlık isteği gönderebilir, gelen isteklere yanıt verebilir (kabul/ret) ve arkadaş listelerini yönetebilirler.
 
-## Installation & updates
+- **Görev Yönetimi**: Kullanıcılar kendi görevlerini oluşturabilir, güncelleyebilir, silebilir ve arkadaşlarına görev atayabilirler.
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+- **Multilingual Destek**: Uygulama Türkçe, İngilizce ve Almanca dillerini destekler.
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+- **Güvenli Kimlik Doğrulama**: Shield kütüphanesi kullanılarak güvenli ve esnek kullanıcı doğrulama ve yetkilendirme işlemleri gerçekleştirilmiştir.
 
-## Setup
+- **Yüksek Performans**: Redis ile yüksek hızda veri işlemleri ve oturum yönetimi sağlanırken, MongoDB log yönetimi için kullanılmaktadır.
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+- **RESTful API**: API, modern ve temiz bir tasarımla tüm istemciler için kullanılabilir. CRUD operasyonları ile görevler yönetilebilir.
 
-## Important Change with index.php
+## Api Kullanımı
+- - -
+##### Kullanıcı İşlemleri
+| HTTP Metodu | Endpoint Adı |    URL    |    Body Parametreleri     | Token |
+|:-----------:|:------------:|:---------:|:-------------------------:|:-----:|
+|    POST     |  Giriş Yap   |  /login   |      Email, Password      |   ❌   |
+|    POST     |   Kayıt Ol   | /register | Username, Email, password |   ❌   |
+|    POST     |  Çıkış Yap   |  /logout  |                           |   ✅   |
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+##### Görev İşlemleri
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+| HTTP Metodu |       Endpoint Adı       |        URL        |       Body Parametreleri       |  Token  |
+|:-----------:|:------------------------:|:-----------------:|:------------------------------:|:-------:|
+|     GET     |    Görevleri Listele     |      /tasks       |                                |    ✅    |
+|     GET     | Idye göre Görevi listele |    /tasks/$id     |                                |    ✅    |
+|    POST     |      Görev Oluştur       |      /tasks       |   title, description, status   |    ✅    |
+|    POST     |   Görevi Arkadaşa Ata    | /tasks/assignTask |  task_id(int), friend_id(int)  |    ✅    |
+|     PUT     | Idye Göre Görev Güncelle |    /tasks/$id     |   title, description, status   |    ✅    |
+|     DEL     |   Idye Gore Görev Sil    |    /tasks/$id     |                                |    ✅    |
 
-**Please** read the user guide for a better explanation of how CI4 works!
+##### Arkadaşlık İşlemleri
 
-## Repository Management
+| HTTP Metodu |       Endpoint Adı       |              URL               |  Token  |
+|:-----------:|:------------------------:|:------------------------------:|:-------:|
+|    POST     | Arkadaşlık İsteği Gönder |  /friendship/send-request/$id  |    ✅    |
+|     GET     |      Gelen İstekler      | /friendship/incoming-requests  |    ✅    |
+|    POST     |     İsteği Kabul Et      | /friendship/accept-request/$id |    ✅    |
+|    POST     |      İsteği Reddet       | /friendship/reject-request/$id |    ✅    |
+|     GET     |   Arkadaşları Listele    |      /friendship/friends       |    ✅    |
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## Örnek İstekler
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+![Örnek Bir İstek Fotoğrafı](writable/uploads/request1.png)
+![Örnek Bir İstek Fotoğrafı](writable/uploads/request2.png)
 
-## Server Requirements
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+## Projeyi Çoklu dilli Kullanma
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+Projeyi farklı bir dilde kullanmak istiyorsanız (tr, en, de), istek gönderirken Headers kısmında şu şekilde veri göndermelisiniz.
+> userLanguage = en | de | tr
+> ![Örnek bir dil fotoğrafı](writable/uploads/multilingual1.png)
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+## Redisin Projedeki Yeri
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+Proje, Türkçe (TR), İngilizce (EN) ve Almanca (DE) olmak üzere çok dilli destek sağlar.
+Redis, bu dillerin çevrim içi çeviri anahtarlarını veya metinlerini önbellekte tutar. Bu sayede, her dil çevirisi için veritabanına sorgu yapılması engellenir.
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+> ![Örnek bir dil fotoğrafı](writable/uploads/redis1.png)
+

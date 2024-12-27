@@ -17,11 +17,6 @@ $routes->group('friendship', ['filter' => 'apiAuth'], function ($routes) {
     $routes->post('reject-request/(:num)', 'FriendshipController::rejectFriendship/$1');
     $routes->get('friends', 'FriendshipController::listFriendships');
 });
-// $routes->get('mutual-friends', 'FriendshipController::listMutualFriends');
-// $routes->post('block', 'FriendshipController::block');
-// $routes->post('unblock', 'FriendshipController::unblock');
-// $routes->get('blocked', 'FriendshipController::listBlockedUsers');
-// service('auth')->routes($routes);
 
 $routes->post('/login', 'AuthController::login');
 $routes->post('/register', 'AuthController::register');

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Constants\TranslationKeys;
 use CodeIgniter\Shield\Entities\User;
 use CodeIgniter\Shield\Models\UserModel;
 

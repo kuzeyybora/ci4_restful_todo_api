@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Entities\FriendshipEntity;
 use CodeIgniter\Model;
 
 class FriendshipModel extends Model
 {
     protected $table            = 'friendships';
     protected $primaryKey       = 'id';
-    protected $returnType       = 'object';
+    protected $returnType       = FriendshipEntity::class;
     protected $allowedFields    = ['user_id', 'friend_id', 'status'];
 
     public function getAcceptedFriends ($user_id)

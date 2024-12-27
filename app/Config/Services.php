@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Services\TaskService;
+use App\Services\ValidationService;
 use CodeIgniter\Config\BaseService;
 
 /**
@@ -29,4 +31,13 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+    public static function validationService()
+    {
+        return new ValidationService();
+    }
+
+    public static function taskService()
+    {
+        return new TaskService();
+    }
 }

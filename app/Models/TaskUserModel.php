@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use CodeIgniter\Shield\Models\DatabaseException;
 
 class TaskUserModel extends Model
 {
@@ -11,37 +12,35 @@ class TaskUserModel extends Model
     protected $returnType       = 'object';
     protected $allowedFields    = ['user_id', 'task_id', 'task_owner_id'];
 
-    public function getUserTasks($user_id)
+    public function getAllUserTasks(int $user_id): array
     {
-        $builder = $this->db->table('task_user');
-        $builder->select('*');
-        $builder->join('tasks', 'tasks.id = task_user.task_id');
-        $builder->where('task_user.user_id', $user_id);
-        $query = $builder->get();
-        return $query->getResult();
-
-        // will be 1 method
+        return $this->join('tasks', 'tasks.id = task_user.task_id')
+            ->select("tasks.title, tasks.description, tasks.status")
+            ->where('task_user.user_id', $user_id)
+            ->findAll();
     }
-    public function getUserTask($user_id, $task_id)
+    public function getUserTaskById(int $user_id, int $task_id): ?object
     {
-        return $this->db->table('task_user')
-            ->select('*')
-            ->join('tasks', 'tasks.id = task_user.task_id')
+        return $this->join('tasks', 'tasks.id = task_user.task_id')
+            ->select("tasks.title, tasks.description, tasks.status")
             ->where('task_user.user_id', $user_id)
             ->where('task_user.task_id', $task_id)
-            ->get()
-            ->getRow();
-
-        // will be 1 method
+            ->first();
     }
-    public function assignTask($task_id, $user_id, $friend_id): bool
-    {
-        if (!$this->getUserTask($user_id, $task_id))
-        {
-            return false;
-        }
 
-        if ($this->where(['task_id' => $task_id, 'user_id' => $friend_id])->first()) {
+    /**
+     * Assign a task to a friend.
+     * Checks if the user has the task and if the task isn't already assigned.
+     *
+     * @param int $task_id The task ID.
+     * @param int $user_id The ID of the user who owns the task.
+     * @param int $friend_id The ID of the user to assign the task to.
+     *
+     * @return bool True if the task was assigned, false if the task cannot be assigned.
+     */
+    public function assignTask(int $task_id, int $user_id, int $friend_id): bool
+    {
+        if (empty($this->getUserTaskById($user_id, $task_id)) || $this->where(['task_id' => $task_id, 'user_id' => $friend_id])->first()) {
             return false;
         }
 

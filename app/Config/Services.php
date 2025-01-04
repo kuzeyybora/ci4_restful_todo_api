@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Services\AuthService;
 use App\Services\FriendshipService;
+use App\Services\RedisService;
 use App\Services\TaskService;
 use App\Services\ValidationService;
 use CodeIgniter\Config\BaseService;
@@ -33,22 +34,46 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
-    public static function validationService(): validationService
+    public static function validationService(bool $getShared = true): object
     {
+        if ($getShared) {
+            return static::getSharedInstance('validationService');
+        }
+
         return new ValidationService();
     }
 
-    public static function taskService(): TaskService
+    public static function taskService(bool $getShared = true): object
     {
+        if ($getShared) {
+            return static::getSharedInstance('taskService');
+        }
+
         return new TaskService();
     }
-    public static function friendshipService(): friendshipService
+    public static function friendshipService(bool $getShared = true): object
     {
+        if ($getShared) {
+            return static::getSharedInstance('friendshipService');
+        }
+
         return new FriendshipService();
     }
 
-    public static function authService(): AuthService
+    public static function authService(bool $getShared = true): object
     {
+        if ($getShared) {
+            return static::getSharedInstance('authService');
+        }
+
         return new AuthService();
+    }
+    public static function redisService(bool $getShared = true): object
+    {
+        if ($getShared) {
+        return static::getSharedInstance('redisService');
+        }
+
+        return new RedisService();
     }
 }

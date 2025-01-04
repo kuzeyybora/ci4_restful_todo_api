@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use CodeIgniter\Shield\Models\DatabaseException;
+use ReflectionException;
 
 class TaskUserModel extends Model
 {
@@ -12,12 +12,12 @@ class TaskUserModel extends Model
     protected $returnType       = 'object';
     protected $allowedFields    = ['user_id', 'task_id', 'task_owner_id'];
 
-    public function getAllUserTasks(int $user_id): array
+    public function getAllUserTasks(int $user_id, int $limit, int $page): array
     {
         return $this->join('tasks', 'tasks.id = task_user.task_id')
             ->select("tasks.title, tasks.description, tasks.status")
             ->where('task_user.user_id', $user_id)
-            ->findAll();
+            ->paginate($limit, 'page', $page);
     }
     public function getUserTaskById(int $user_id, int $task_id): ?object
     {
@@ -37,6 +37,7 @@ class TaskUserModel extends Model
      * @param int $friend_id The ID of the user to assign the task to.
      *
      * @return bool True if the task was assigned, false if the task cannot be assigned.
+     * @throws ReflectionException
      */
     public function assignTask(int $task_id, int $user_id, int $friend_id): bool
     {

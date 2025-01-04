@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Interfaces\Services\IFriendshipService;
 use App\Models\FriendshipModel;
 
-class FriendshipService
+class FriendshipService implements IFriendshipService
 {
     /**
      * @var FriendshipModel
@@ -51,7 +52,7 @@ class FriendshipService
         return (bool)$friendshipRequest;
     }
 
-    public function listIncomingFriendRequests($limit, $page): array
+    public function listIncomingFriendRequests(int $limit, int $page): ?array
     {
         return $this->friendshipModel->incomingFriendRequest($this->userId, $limit, $page);
     }
@@ -61,7 +62,7 @@ class FriendshipService
         return $this->friendshipModel->acceptOrRejectRequest($request_id, $this->userId , $status);
     }
 
-    public function listFriendships($limit, $page): ?array
+    public function listFriendships(int $limit, int $page): ?array
     {
         return $this->friendshipModel->getAcceptedFriends($this->userId, $limit, $page);
     }

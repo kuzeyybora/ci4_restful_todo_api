@@ -43,11 +43,8 @@ class AuthController extends BaseController
     }
     public function logout(): ResponseInterface
     {
-        if (auth()->loggedIn()) {
-            auth()->user()->revokeAllAccessTokens();
-            auth()->logout();
-            return response_success(message: TranslationKeys::LOGOUT_SUCCESS);
-        }
-        return response_fail(message: TranslationKeys::LOGOUT_FAIL);
+        return $this->authService->logout()
+            ? response_success(message: TranslationKeys::LOGOUT_SUCCESS)
+            : response_fail(TranslationKeys::LOGOUT_FAIL);
     }
 }

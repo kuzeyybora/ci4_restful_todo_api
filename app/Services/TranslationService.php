@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\TranslationModel;
+use App\Interfaces\Services\ITranslationService;
 
-class TranslationService
+class TranslationService implements ITranslationService
 {
-    protected RedisService $redis;
-    protected TranslationModel $translationModel;
+    protected object $redis;
+    protected object $translationModel;
 
     public function __construct()
     {
-        $this->redis = new RedisService();
-        $this->translationModel = new TranslationModel();
+        $this->redis = service('redisService');
+        $this->translationModel = model("TranslationModel");
     }
 
     public function getTranslation(string $key, string $locale): object
@@ -66,7 +66,7 @@ class TranslationService
         return $updatedData;
     }
 
-    protected function fetchTranslationsFromDatabase(string $locale): array
+    public function fetchTranslationsFromDatabase(string $locale): array
     {
         $translations = $this->translationModel->findAll();
         $result = [];

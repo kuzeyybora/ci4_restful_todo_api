@@ -1,26 +1,21 @@
 <?php
 namespace App\Services;
 
+use App\Interfaces\Services\ITaskService;
 use App\Models\FriendshipModel;
 use App\Models\TaskModel;
 use App\Models\TaskUserModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
-class TaskService
+class TaskService implements ITaskService
 {
-    /**
-     * @var TaskModel
-     */
+    /** @var TaskModel */
     protected $taskModel;
 
-    /**
-     * @var TaskUserModel
-     */
+    /** @var TaskUserModel */
     protected $taskUserModel;
 
-    /**
-     * @var FriendshipModel
-     */
+    /** @var FriendshipModel */
     protected $friendshipModel;
     private readonly int $userId;
     public function __construct()
@@ -35,7 +30,7 @@ class TaskService
         return $this->taskUserModel->getUserTaskById($this->userId, $task_id);
     }
 
-    public function getAllUserTasks($limit, $page): ?array
+    public function getAllUserTasks(int $limit = 10, int $page = 1): ?array
     {
         return $this->taskUserModel->getAllUserTasks($this->userId, $limit, $page);
     }
@@ -95,7 +90,7 @@ class TaskService
         }
         return $this->taskUserModel->assignTask($task_id, $this->userId, $friend_id);
     }
-    public function deleteTask($task_id): bool
+    public function deleteTask(int $task_id): bool
     {
         return $this->taskModel->delete($task_id);
     }

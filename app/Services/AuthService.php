@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Interfaces\Services\IAuthService;
 use CodeIgniter\Shield\Entities\User;
 use CodeIgniter\Shield\Models\UserModel;
 
-class AuthService
+class AuthService implements IAuthService
 {
     public function login(string $email, string $password): string
     {
@@ -37,8 +38,14 @@ class AuthService
 
         return $userObject->save($userEntityObject);
     }
-    public function logout()
+    public function logout(): bool
     {
-
+        if (!auth()->loggedIn()) {
+            if (auth()->user()->revokeAllAccessTokens() && auth()->logout()) {
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 }

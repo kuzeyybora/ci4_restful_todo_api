@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Filters\AuthFilter;
 use App\Filters\RateLimitFilter;
+use App\Filters\RoleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -40,6 +41,7 @@ class Filters extends BaseFilters
         'languageFilter'   => LanguageFilter::class,
         'apiAuth' => AuthFilter::class,
         'rateLimitFilter' => RateLimitFilter::class,
+        'roleFilter' => RoleFilter::class,
     ];
 
     /**

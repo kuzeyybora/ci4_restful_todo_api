@@ -18,6 +18,10 @@ $routes->group('friendship', ['filter' => 'apiAuth'], function ($routes) {
     $routes->get('friends', 'FriendshipController::listFriendships');
 });
 
+$routes->group('admin', ['filter' => 'roleFilter'], function ($routes) {
+    $routes->get('users', 'AdminController::index');
+});
+
 $routes->post('/login', 'AuthController::login');
 $routes->post('/register', 'AuthController::register');
 $routes->post('/logout', 'AuthController::logout');

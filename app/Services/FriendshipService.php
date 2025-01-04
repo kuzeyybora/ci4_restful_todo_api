@@ -51,9 +51,9 @@ class FriendshipService
         return (bool)$friendshipRequest;
     }
 
-    public function listIncomingFriendRequests(): array
+    public function listIncomingFriendRequests($limit, $page): array
     {
-        return $this->friendshipModel->incomingFriendRequest($this->userId);
+        return $this->friendshipModel->incomingFriendRequest($this->userId, $limit, $page);
     }
 
     public function acceptOrRejectFriendshipRequest(int $request_id, bool $status): bool
@@ -61,8 +61,8 @@ class FriendshipService
         return $this->friendshipModel->acceptOrRejectRequest($request_id, $this->userId , $status);
     }
 
-    public function listFriendships(): ?array
+    public function listFriendships($limit, $page): ?array
     {
-        return $this->friendshipModel->getAcceptedFriends($this->userId);
+        return $this->friendshipModel->getAcceptedFriends($this->userId, $limit, $page);
     }
 }

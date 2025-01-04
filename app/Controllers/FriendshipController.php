@@ -14,9 +14,7 @@ use CodeIgniter\HTTP\ResponseInterface;
  */
 class FriendshipController extends BaseController
 {
-    /**
-     * @var FriendshipService $friendshipService Service for handling friendship operations
-     */
+    /** @var FriendshipService $friendshipService Service for handling friendship operations */
     private object $friendshipService;
 
     /**
@@ -44,11 +42,16 @@ class FriendshipController extends BaseController
     /**
      * Lists all incoming friendship requests for the authenticated user.
      *
+     * @param int $limit
+     * @param int $page
+     *
      * @return ResponseInterface Response containing a list of incoming requests or a failure message
      */
-    public function listIncomingRequests(): ResponseInterface
+    public function listIncomingRequests(int $limit = 10, int $page = 1): ResponseInterface
     {
-        return ($incomingRequests = $this->friendshipService->listIncomingFriendRequests())
+        if ($limit < 1 || $page < 1) { return response_fail(TranslationKeys::VALIDATION_FAIL); }
+
+        return ($incomingRequests = $this->friendshipService->listIncomingFriendRequests($limit, $page))
             ? response_success($incomingRequests)
             : response_fail(TranslationKeys::NOT_FOUND);
     }
@@ -82,11 +85,16 @@ class FriendshipController extends BaseController
     /**
      * Lists all friendships for the authenticated user.
      *
+     * @param int $limit
+     * @param int $page
+     *
      * @return ResponseInterface Response containing a list of friendships or a failure message
      */
-    public function listFriendships(): ResponseInterface
+    public function listFriendships(int $limit = 10, int $page = 1): ResponseInterface
     {
-        return ($friendships = $this->friendshipService->listFriendships())
+        if ($limit < 1 || $page < 1) { return response_fail(TranslationKeys::VALIDATION_FAIL); }
+
+        return ($friendships = $this->friendshipService->listFriendships($limit, $page))
             ? response_success($friendships)
             : response_fail();
     }

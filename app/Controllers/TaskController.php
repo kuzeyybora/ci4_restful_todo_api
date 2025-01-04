@@ -3,11 +3,14 @@
 namespace App\Controllers;
 
 use App\Constants\TranslationKeys;
+use App\Services\TaskService;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class TaskController extends BaseController
 {
     private object $validationService;
+
+    /** @var TaskService */
     private object $taskService;
 
     public function __construct()
@@ -19,11 +22,13 @@ class TaskController extends BaseController
     /**
      * Get all tasks for the authenticated user.
      *
+     * @param int $limit
+     * @param int $page
      * @return ResponseInterface
      */
-    public function index(): ResponseInterface
+    public function index(int $limit = 10, int $page = 1): ResponseInterface
     {
-        $query = $this->taskService->getAllUserTasks();
+        $query = $this->taskService->getAllUserTasks($limit, $page);
 
         return $query
             ? response_success($query, TranslationKeys::SUCCESS)

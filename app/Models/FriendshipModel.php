@@ -12,7 +12,7 @@ class FriendshipModel extends Model
     protected $returnType       = FriendshipEntity::class;
     protected $allowedFields    = ['user_id', 'friend_id', 'status'];
 
-    public function getAcceptedFriends ($user_id)
+    public function getAcceptedFriends ($user_id, $limit = 10, $page = 1): ?array
     {
         return $this->select('user_id, friend_id')
             ->where('status', 'accepted')
@@ -20,14 +20,14 @@ class FriendshipModel extends Model
             ->where('user_id', $user_id)
             ->orWhere('friend_id', $user_id)
             ->groupEnd()
-            ->findAll();
+            ->paginate($limit, 'page', $page);
     }
-    public function incomingFriendRequest($user_id): ?array
+    public function incomingFriendRequest($user_id, $limit = 10, $page = 1): ?array
     {
         return $this->select('id, user_id, friend_id')->where([
             'friend_id' => $user_id,
             'status' => 'pending'
-        ])->findAll();
+        ])->paginate($limit, 'page', $page);
     }
     public function acceptOrRejectRequest(int $requestId, int $userId, bool $accept): bool
     {

@@ -6,7 +6,7 @@ use CodeIgniter\Config\BaseConfig;
 
 class MongoDB extends BaseConfig
 {
-    public $uri;
-    public $database;
-    public $collection;
+    public string $uri = '';
+    public string $database = '';
+    public string $collection = '';
 }

@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\AuthFilter;
+use App\Filters\RateLimitFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -38,6 +39,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'languageFilter'   => LanguageFilter::class,
         'apiAuth' => AuthFilter::class,
+        'rateLimitFilter' => RateLimitFilter::class,
     ];
 
     /**
@@ -74,6 +76,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             'languageFilter',
+            'rateLimitFilter',
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',

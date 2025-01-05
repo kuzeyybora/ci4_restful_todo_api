@@ -22,9 +22,17 @@ $routes->group('friendship', ['filter' => 'apiAuth'], function ($routes) {
     $routes->get('friends/(:num)/(:num)', 'FriendshipController::listFriendships/$1/$2');
 });
 
-$routes->group('admin', ['filter' => 'roleFilter'], function ($routes) {
-    $routes->get('users', 'AdminController::index');
+$routes->group('admin', ['filter' => ['apiAuth', 'roleFilter']], function ($routes) {
+    $routes->get('index', 'AdminController::index');
+    $routes->get('users', 'AdminController::listUsers');
+    $routes->get('logs', 'AdminController::listLogs');
+    $routes->get('friendships', 'AdminController::listFriendships');
+    $routes->get('tasks', 'AdminController::listTasks');
+    $routes->get('queues', 'AdminController::listQueues');
+    $routes->get('task-users', 'AdminController::listTaskUsers');
+    $routes->get('translations/(tr|en|de)', 'AdminController::listTranslations/$1');
 });
+
 
 $routes->post('/login', 'AuthController::login');
 $routes->post('/register', 'AuthController::register');

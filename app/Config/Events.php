@@ -53,3 +53,14 @@ Events::on('pre_system', static function (): void {
         }
     }
 });
+
+Events::on('auditLog', function ($data) {
+    $mongoDBService = service("MongoDBService");
+
+    $mongoDBService->logToMongoDB(
+        $data['action'],
+        $data['model'],
+        $data['details'],
+        $data['user_id'] ?? null
+    );
+});

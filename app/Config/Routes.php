@@ -7,23 +7,24 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->resource('tasks', ['controller' => 'TaskController', 'filter' => 'apiAuth']);
-$routes->post('tasks/assignTask', 'TaskController::assignTask', ['filter' => 'apiAuth']);
-$routes->get('tasks', 'TaskController::index', ['filter' => 'apiAuth']);
-$routes->get('tasks/(:num)/(:num)', 'TaskController::index/$1/$2', ['filter' => 'apiAuth']);
+$routes->group('tasks', ['filter' => 'apiAuth'], function ($routes) {
+    $routes->resource('', ['controller' => 'TaskController']);
+    $routes->post('assignTask', 'TaskController::assignTask');
+    $routes->get('(:num)/(:num)', 'TaskController::index/$1/$2');
+});
 
-$routes->group('friendship', ['filter' => 'apiAuth'], function ($routes) {
+$routes->group('friends', ['filter' => 'apiAuth'], function ($routes) {
     $routes->post('send-request/(:num)', 'FriendshipController::sendRequest/$1');
-    $routes->get('incoming-requests', 'FriendshipController::listIncomingRequests');
-    $routes->get('incoming-requests/(:num)/(:num)', 'FriendshipController::listIncomingRequests/$1/$2');
-    $routes->post('accept-request/(:num)', 'FriendshipController::acceptFriendship/$1');
-    $routes->post('reject-request/(:num)', 'FriendshipController::rejectFriendship/$1');
-    $routes->get('friends', 'FriendshipController::listFriendships');
-    $routes->get('friends/(:num)/(:num)', 'FriendshipController::listFriendships/$1/$2');
+    $routes->get('requests/incoming', 'FriendshipController::listIncomingRequests');
+    $routes->get('requests/incoming/(:num)/(:num)', 'FriendshipController::listIncomingRequests/$1/$2');
+    $routes->post('requests/accept/(:num)', 'FriendshipController::acceptFriendship/$1');
+    $routes->post('requests/reject/(:num)', 'FriendshipController::rejectFriendship/$1');
+    $routes->get('list', 'FriendshipController::listFriendships');
+    $routes->get('list/(:num)/(:num)', 'FriendshipController::listFriendships/$1/$2');
 });
 
 $routes->group('admin', ['filter' => ['apiAuth', 'roleFilter']], function ($routes) {
-    $routes->get('index', 'AdminController::index');
+    $routes->get('', 'AdminController::index');
     $routes->get('users', 'AdminController::listUsers');
     $routes->get('logs', 'AdminController::listLogs');
     $routes->get('friendships', 'AdminController::listFriendships');
@@ -31,6 +32,11 @@ $routes->group('admin', ['filter' => ['apiAuth', 'roleFilter']], function ($rout
     $routes->get('queues', 'AdminController::listQueues');
     $routes->get('task-users', 'AdminController::listTaskUsers');
     $routes->get('translations/(tr|en|de)', 'AdminController::listTranslations/$1');
+
+    $routes->group('queue', function ($routes) {
+        $routes->get('list', 'QueueController::listQueues');
+        $routes->post('add', 'QueueController::addQueue');
+    });
 });
 
 

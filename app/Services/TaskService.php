@@ -7,7 +7,7 @@ use App\Models\TaskModel;
 use App\Models\TaskUserModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
-class TaskService implements ITaskService
+class TaskService extends BaseService implements ITaskService
 {
     /** @var TaskModel */
     protected $taskModel;
@@ -17,13 +17,13 @@ class TaskService implements ITaskService
 
     /** @var FriendshipModel */
     protected $friendshipModel;
-    private readonly int $userId;
     public function __construct()
     {
         $this->taskModel = model('TaskModel');
         $this->taskUserModel = model('TaskUserModel');
         $this->friendshipModel = model('FriendshipModel');
         $this->userId = auth()->id();
+        $this->modelName = $this->taskModel->getModelName();
     }
     public function getUserTask(int $task_id = 0): ?object
     {
@@ -93,5 +93,15 @@ class TaskService implements ITaskService
     public function deleteTask(int $task_id): bool
     {
         return $this->taskModel->delete($task_id);
+    }
+
+    public function getAllTasks(int $limit = 10, int $page = 1): ?array
+    {
+        return $this->taskModel->findAll();
+    }
+
+    public function getAllTaskUsers(int $limit = 10, int $page = 1): ?array
+    {
+        return $this->taskUserModel->findAll();
     }
 }

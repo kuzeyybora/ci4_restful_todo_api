@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 use App\Constants\TranslationKeys;
 use App\Services\TaskService;
+use App\Services\ValidationService;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class TaskController extends BaseController
 {
+    /** @var ValidationService */
     private object $validationService;
 
     /** @var TaskService */
@@ -22,8 +24,9 @@ class TaskController extends BaseController
     /**
      * Get all tasks for the authenticated user.
      *
-     * @param int $limit
-     * @param int $page
+     * @param int $limit The maximum number of items to display per page.
+     * @param int $page The current page number being requested.
+     *
      * @return ResponseInterface
      */
     public function index(int $limit = 10, int $page = 1): ResponseInterface

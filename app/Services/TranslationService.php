@@ -3,16 +3,20 @@
 namespace App\Services;
 
 use App\Interfaces\Services\ITranslationService;
+use App\Models\TranslationModel;
 
-class TranslationService implements ITranslationService
+class TranslationService extends BaseService implements ITranslationService
 {
     protected object $redis;
+
+    /** @var TranslationModel  */
     protected object $translationModel;
 
     public function __construct()
     {
         $this->redis = service('redisService');
         $this->translationModel = model("TranslationModel");
+        $this->modelName = $this->translationModel->getModelName();
     }
 
     public function getTranslation(string $key, string $locale): object
@@ -24,6 +28,7 @@ class TranslationService implements ITranslationService
             $translations = $this->fetchTranslationsFromDatabase($locale);
             foreach ($translations as $translation => $value) {
                 $redisKey = "languages:$locale:$translation";
+
                 $this->redis->hset($redisKey, 'key_name',      $value->key_name); //
                 $this->redis->hset($redisKey, 'language_code', $value->language_code); //
                 $this->redis->hset($redisKey, 'value',         $value->value); //

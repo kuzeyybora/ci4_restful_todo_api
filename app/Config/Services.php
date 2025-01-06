@@ -2,10 +2,13 @@
 
 namespace Config;
 
+use App\Services\AdminService;
 use App\Services\AuthService;
 use App\Services\FriendshipService;
+use App\Services\MongoDBService;
 use App\Services\RedisService;
 use App\Services\TaskService;
+use App\Services\TranslationService;
 use App\Services\ValidationService;
 use CodeIgniter\Config\BaseService;
 
@@ -75,5 +78,29 @@ class Services extends BaseService
         }
 
         return new RedisService();
+    }
+    public static function translationService(bool $getShared = true): object
+    {
+        if ($getShared) {
+            return static::getSharedInstance('translationService');
+        }
+
+        return new TranslationService();
+    }
+    public static function mongoDBService(bool $getShared = true): object
+    {
+        if ($getShared) {
+            return static::getSharedInstance('mongoDBService');
+        }
+
+        return new MongoDBService();
+    }
+    public static function adminService(bool $getShared = true): object
+    {
+        if ($getShared) {
+            return static::getSharedInstance('adminService');
+        }
+
+        return new AdminService();
     }
 }

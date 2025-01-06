@@ -68,4 +68,9 @@ class Validation extends BaseConfig
       'friend_id' => 'required|integer|min_length[1]|max_length[20]',
       'task_id' => 'required|integer|min_length[1]|max_length[20]',
     ];
+    public array $queue_add_rules = [
+        'email' => 'required|string|valid_email|min_length[5]|max_length[50]',
+        'subject' => 'required|string|min_length[1]|max_length[40]',
+        'message' => 'required|string|min_length[1]|max_length[255]',
+    ];
 }

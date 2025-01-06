@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Entities\TaskEntity;
 use CodeIgniter\Model;
 
-class TaskModel extends Model
+class TaskModel extends BaseModel
 {
     protected $table            = 'tasks';
     protected $primaryKey       = 'id';

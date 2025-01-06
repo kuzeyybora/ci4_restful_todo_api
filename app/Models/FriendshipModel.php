@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Entities\FriendshipEntity;
 use CodeIgniter\Model;
 
-class FriendshipModel extends Model
+class FriendshipModel extends BaseModel
 {
     protected $table            = 'friendships';
     protected $primaryKey       = 'id';

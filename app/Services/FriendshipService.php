@@ -5,17 +5,17 @@ namespace App\Services;
 use App\Interfaces\Services\IFriendshipService;
 use App\Models\FriendshipModel;
 
-class FriendshipService implements IFriendshipService
+class FriendshipService extends BaseService implements IFriendshipService
 {
     /**
      * @var FriendshipModel
      */
     private object $friendshipModel;
-    private int $userId;
     public function __construct()
     {
         $this->friendshipModel = model("FriendshipModel");
         $this->userId = auth()->id();
+        $this->modelName = $this->friendshipModel->getModelName();
     }
 
     public function sendFriendRequest(int $targetUserId): bool
@@ -65,5 +65,10 @@ class FriendshipService implements IFriendshipService
     public function listFriendships(int $limit, int $page): ?array
     {
         return $this->friendshipModel->getAcceptedFriends($this->userId, $limit, $page);
+    }
+
+    public function listAllFriendships()
+    {
+        return $this->friendshipModel->findAll();
     }
 }

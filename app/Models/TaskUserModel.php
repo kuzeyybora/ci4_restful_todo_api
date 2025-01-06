@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 use ReflectionException;
 
-class TaskUserModel extends Model
+class TaskUserModel extends BaseModel
 {
     protected $table            = 'task_user';
     protected $primaryKey       = 'id';

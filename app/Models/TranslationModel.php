@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TranslationModel extends Model
+class TranslationModel extends BaseModel
 {
     protected $table = 'translations';
     protected $primaryKey = 'id';

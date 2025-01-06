@@ -42,8 +42,8 @@ class FriendshipController extends BaseController
     /**
      * Lists all incoming friendship requests for the authenticated user.
      *
-     * @param int $limit
-     * @param int $page
+     * @param int $limit The maximum number of items to display per page.
+     * @param int $page The current page number being requested.
      *
      * @return ResponseInterface Response containing a list of incoming requests or a failure message
      */
@@ -85,8 +85,8 @@ class FriendshipController extends BaseController
     /**
      * Lists all friendships for the authenticated user.
      *
-     * @param int $limit
-     * @param int $page
+     * @param int $limit The maximum number of items to display per page.
+     * @param int $page The current page number being requested.
      *
      * @return ResponseInterface Response containing a list of friendships or a failure message
      */

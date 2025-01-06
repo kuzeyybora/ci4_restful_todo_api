@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-class ValidationService
+use App\Interfaces\Services\IValidationService;
+
+class ValidationService implements IValidationService
 {
     public function sanitizeInput(array|string $input): array|string
     {

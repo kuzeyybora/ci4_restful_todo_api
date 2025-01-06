@@ -6,8 +6,8 @@ use CodeIgniter\Config\BaseConfig;
 
 class Redis extends BaseConfig
 {
-    public $host;
-    public $port;
-    public $password;
-    public $database;
+    public string $host = '';
+    public string $port = '';
+    public string $password = '';
+    public string $database = '';
 }

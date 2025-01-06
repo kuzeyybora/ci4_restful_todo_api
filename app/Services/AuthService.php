@@ -20,6 +20,7 @@ class AuthService implements IAuthService
         if (!$loginAttempt->isOK()) {
             return false;
         } else {
+            auth()->getUser()->revokeAllAccessTokens();
             $userObject = new UserModel();
             $userData = $userObject->findById(auth()->id());
             $token = $userData->generateAccessToken("PAT");

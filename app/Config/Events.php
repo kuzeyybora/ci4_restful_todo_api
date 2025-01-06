@@ -58,8 +58,9 @@ Events::on('auditLog', function ($data) {
     $mongoDBService = service("MongoDBService");
 
     $mongoDBService->logToMongoDB(
+        $data['serviceName'],
+        $data['modelName'],
         $data['action'],
-        $data['model'],
         $data['details'],
         $data['user_id'] ?? null
     );

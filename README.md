@@ -194,7 +194,7 @@ Görev Oluşturma Endpointi için örnek istek ve cevapları
 > }
 > ```
 > Başarılı Cevap: 201 Created
-> ```php 
+> ```json 
 > {
 >   "status": true,
 >   "message": "Kayıt Başarıyla Oluşturuldu!",
@@ -202,7 +202,7 @@ Görev Oluşturma Endpointi için örnek istek ve cevapları
 > }
 > ```
 > Başarısız Cevap: 400 Bad Request
-> ```php
+> ```json
 > {
 >   "status": false,
 >   "message": "Veri oluşturma başarısız!",

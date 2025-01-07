@@ -164,9 +164,8 @@ Login Endpointi için örnek istek ve cevapları:
 >   "password":"123123"
 > }
 > ```
-> Başarılı Cevap:
-> ```php
-> HTTP Durum Kodu: 200 OK
+> Başarılı Cevap: 200 OK
+> ```json
 > {
 >   "status": true,
 >   "message": "Giriş başarıyla yapıldı!",
@@ -175,9 +174,8 @@ Login Endpointi için örnek istek ve cevapları:
 >   }
 > }
 > ```
-> Başarısız Cevap:
-> ```php
-> HTTP Durum Kodu: 401 Unauthorized
+> Başarısız Cevap: 401 Unauthorized
+> ```json
 > {
 >   "status": false,
 >   "message": "Giriş Başarısız Oldu!",
@@ -195,18 +193,16 @@ Görev Oluşturma Endpointi için örnek istek ve cevapları
 >   "status":"pending"
 > }
 > ```
-> Başarılı Cevap:
-> ```php
-> HTTP Durum Kodu: 201 Created
+> Başarılı Cevap: 201 Created
+> ```php 
 > {
 >   "status": true,
 >   "message": "Kayıt Başarıyla Oluşturuldu!",
 >   "data": null
 > }
 > ```
-> Başarısız Cevap:
+> Başarısız Cevap: 400 Bad Request
 > ```php
-> HTTP Durum Kodu: 400 Bad Request
 > {
 >   "status": false,
 >   "message": "Veri oluşturma başarısız!",
@@ -376,9 +372,8 @@ Login Endpoint example request and response:
 >   "password":"123123"
 > }
 > ```
-> Successful Response:
-> ```php
-> HTTP Status Code: 200 OK
+> Successful Response: 200 OK
+> ```json
 > {
 >   "status": true,
 >   "message": "Login completed successfully!",
@@ -387,9 +382,8 @@ Login Endpoint example request and response:
 >   }
 > }
 > ```
-> Unsuccessful Response:
-> ```php
-> HTTP Status Code: 401 Unauthorized
+> Unsuccessful Response: 401 Unauthorized
+> ```json
 > {
 >   "status": false,
 >   "message": "Login failed!",
@@ -405,18 +399,16 @@ Create Task Endpoint example request and response:
 >   "status":"pending"
 > }
 > ```
-> Successful Response:
-> ```php
-> HTTP Status Code: 201 Created
+> Successful Response: 201 Created
+> ```json
 > {
 >   "status": true,
 >   "message": "Record created successfully!",
 >   "data": null
 > }
 > ```
-> Unsuccessful Response:
-> ```php
-> HTTP Status Code: 400 Bad Request
+> Unsuccessful Response: 400 Bad Request
+> ```json
 > {
 >   "status": false,
 >   "message": "Data creation unsuccessful!",

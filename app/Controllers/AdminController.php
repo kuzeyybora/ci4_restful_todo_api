@@ -2,14 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Constants\TranslationKeys;
 use App\Services\AdminService;
-use App\Services\FriendshipService;
-use App\Services\MongoDBService;
-use App\Services\RedisService;
-use App\Services\TaskService;
-use App\Services\TranslationService;
-use App\Services\ValidationService;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class AdminController extends BaseController
@@ -20,47 +13,75 @@ class AdminController extends BaseController
     {
         $this->adminService = service("adminService");
     }
-
-    public function index()
-    {
-        // Pagination And Filters
-        // Audit Logs
-        return response_success($this->adminService->listLogs());
-    }
-
+    /**
+     * Retrieves a list of all users.
+     *
+     * @return ResponseInterface A response containing the list of users.
+     */
     public function listUsers(): ResponseInterface
     {
         return response_success($this->adminService->listUsers());
-
     }
 
+    /**
+     * Retrieves a list of logs.
+     *
+     * @return ResponseInterface A response containing the list of logs.
+     */
     public function listLogs(): ResponseInterface
     {
         return response_success($this->adminService->listLogs());
     }
 
+    /**
+     * Retrieves a list of friendships.
+     *
+     * @return ResponseInterface A response containing the list of friendships.
+     */
     public function listFriendships(): ResponseInterface
     {
         return response_success($this->adminService->listFriendships());
     }
 
+    /**
+     * Retrieves a list of tasks.
+     *
+     * @return ResponseInterface A response containing the list of tasks.
+     */
     public function listTasks(): ResponseInterface
     {
         return response_success($this->adminService->listTasks());
     }
 
+    /**
+     * Retrieves a list of queues.
+     *
+     * @return ResponseInterface A response containing the list of queues.
+     */
     public function listQueues(): ResponseInterface
     {
         return response_success($this->adminService->listQueues());
     }
 
+    /**
+     * Retrieves a list of task users.
+     *
+     * @return ResponseInterface A response containing the list of task users.
+     */
     public function listTaskUsers(): ResponseInterface
     {
         return response_success($this->adminService->listTaskUsers());
     }
 
-    public function listTranslations($locale): ResponseInterface
+    /**
+     * Retrieves a list of translations for the specified locale.
+     *
+     * @param string $locale The locale for which translations are to be retrieved.
+     * @return ResponseInterface A response containing the list of translations.
+     */
+    public function listTranslations(string $locale): ResponseInterface
     {
         return response_success($this->adminService->listTranslations($locale));
     }
+
 }

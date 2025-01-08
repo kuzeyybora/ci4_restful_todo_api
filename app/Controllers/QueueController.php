@@ -21,10 +21,21 @@ class QueueController extends BaseController
         $this->validationService = service('ValidationService');
     }
 
+    /**
+     * Retrieves all queues from the Redis service and returns a success response.
+     *
+     * @return ResponseInterface A response containing the list of all queues.
+     */
     public function listQueues(): ResponseInterface
     {
         return response_success($this->redisService->getAllQueues());
     }
+
+    /**
+     * Adds a new email queue to the Redis service after validating and sanitizing the request data.
+     *
+     * @return ResponseInterface A response indicating the success or failure of adding the queue.
+     */
     public function addQueue(): ResponseInterface
     {
         $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'queue_add_rules');

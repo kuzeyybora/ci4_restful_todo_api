@@ -9,7 +9,6 @@ class Email extends BaseJob implements JobInterface
 {
     public function process(): bool
     {
-        // Job verilerini kontrol edelim
         log_message('info', 'Email job data: ' . json_encode($this->data));
 
         $emailService = service('email', null, false);

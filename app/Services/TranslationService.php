@@ -19,6 +19,13 @@ class TranslationService extends BaseService implements ITranslationService
         $this->modelName = $this->translationModel->getModelName();
     }
 
+    /**
+     * Fetch the translation for a given key and locale from Redis or the database.
+     *
+     * @param string $key The translation key.
+     * @param string $locale The locale code (language).
+     * @return object The translation object.
+     */
     public function getTranslation(string $key, string $locale): object
     {
         $translationKey = "languages:$locale:$key";
@@ -44,6 +51,12 @@ class TranslationService extends BaseService implements ITranslationService
         return (object) $translation;
     }
 
+    /**
+     * Revalidate translations by checking if the Redis cache is outdated and needs to be updated.
+     *
+     * @param string $locale The locale code (language).
+     * @return array The updated translation data.
+     */
     public function reValidation(string $locale): array
     {
         $translations = $this->fetchTranslationsFromDatabase($locale);
@@ -71,6 +84,12 @@ class TranslationService extends BaseService implements ITranslationService
         return $updatedData;
     }
 
+    /**
+     * Fetch translations from the database for a given locale.
+     *
+     * @param string $locale The locale code (language).
+     * @return array The translations.
+     */
     public function fetchTranslationsFromDatabase(string $locale): array
     {
         $translations = $this->translationModel->findAll();

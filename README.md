@@ -252,7 +252,7 @@ This Restful Todo API project, developed with CodeIgniter 4, provides a platform
 9. The Role of Redis in the Project
 10. License
 
-## Proje Yapısı
+## Project Structure
 #### Project Status
 - [x] User Management
 - [x] Task Management

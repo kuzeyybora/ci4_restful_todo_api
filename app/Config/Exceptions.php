@@ -2,9 +2,13 @@
 
 namespace Config;
 
+use App\Exception\ValidationException;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Debug\ExceptionHandler;
 use CodeIgniter\Debug\ExceptionHandlerInterface;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Psr\Log\LogLevel;
 use Throwable;
 
@@ -99,8 +103,34 @@ class Exceptions extends BaseConfig
      *          return new \App\Libraries\MyExceptionHandler();
      *      }
      */
+
     public function handler(int $statusCode, Throwable $exception): ExceptionHandlerInterface
     {
+        if ($exception instanceof ValidationException) {
+            return new class ($exception) implements ExceptionHandlerInterface {
+                protected ValidationException $exception;
+
+                public function __construct(ValidationException $exception)
+                {
+                    $this->exception = $exception;
+                }
+
+                #[NoReturn] public function handle(Throwable $exception, RequestInterface $request, ResponseInterface $response, int $statusCode, int $exitCode): void
+                {
+//                    service('response')
+//                        ->setStatusCode($this->exception->getCode())
+//                        ->setJSON([
+//                            'status' => false,
+//                            'message' => $this->exception->getMessage(),
+//                            'data' => $this->exception->getErrors() ?? []
+//                        ])
+//                        ->send();
+                    $this->exception->getResponse()->send();
+                    exit;
+                }
+            };
+        }
+
         return new ExceptionHandler($this);
     }
 }

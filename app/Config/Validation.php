@@ -41,7 +41,10 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
-
+    public array $pagination_rule = [
+        "limit" => "required|integer|min_length[1]|max_length[3]|greater_than[0]",  // limit bir tamsayı olmalı ve 1 ile 999 arasında bir değer olmalı
+        "page"  => "required|integer|min_length[1]|max_length[3]|greater_than[0]"  // page de tamsayı olmalı ve 0'dan büyük olmalı
+    ];
     public array $user_login = [
         "email" => "required|valid_email|min_length[5]|max_length[50]",
         "password" => "required|min_length[5]|max_length[20]",
@@ -65,8 +68,8 @@ class Validation extends BaseConfig
       'friendship_id' => 'required|integer|min_length[1]|max_length[20]',
     ];
     public array $task_assign_rules = [
-      'friend_id' => 'required|integer|min_length[1]|max_length[20]',
-      'task_id' => 'required|integer|min_length[1]|max_length[20]',
+      'friend_id' => 'required|integer|min_length[1]|max_length[5]',
+      'task_id' => 'required|integer|min_length[1]|max_length[5]',
     ];
     public array $queue_add_rules = [
         'email' => 'required|string|valid_email|min_length[5]|max_length[50]',

@@ -78,20 +78,26 @@ class FriendshipModel extends BaseModel
      *
      * @param int $userId The ID of the first user.
      * @param int $friendId The ID of the second user.
-     * @return bool Returns true if the users are friends, false otherwise.
+     * @return array Returns true if the users are friends, false otherwise.
      */
-    public function checkFriendship(int $userId, int $friendId): bool
+    public function checkFriendship(int $userId, int $friendId)
     {
-        $query = $this->where([
-            'user_id' => $userId,
-            'friend_id' => $friendId,
-            'status' => 'accepted'
-        ])->orWhere([
-            'user_id' => $friendId,
-            'friend_id' => $userId,
-            'status' => 'accepted'
-        ])->first();
+        $query = $this->select("id, user_id, friend_id")
+            ->groupStart()
+            ->where('user_id', $userId)
+            ->where('friend_id', $friendId)
+            ->where('status', 'accepted')
+            ->groupEnd()
+            ->orGroupStart()
+            ->where('user_id', $friendId)
+            ->where('friend_id', $userId)
+            ->where('status', 'accepted')
+            ->groupEnd()
+            ->first();
 
-        return (bool)$query;
+        return $query;
     }
+
+
+
 }

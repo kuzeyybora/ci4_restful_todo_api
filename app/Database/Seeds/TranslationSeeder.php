@@ -500,19 +500,19 @@ class TranslationSeeder extends Seeder
                 "language_code" => "tr",
                 "key_name" => "RESPONSE_UPDATE_ALREADY_EXISTS_UNSUCCESSFULLY_MESSAGE",
                 "value" => "Bütün veriler zaten güncel",
-                "status_code" => "500"
+                "status_code" => "422"
             ],
             [
                 "language_code" => "en",
                 "key_name" => "RESPONSE_UPDATE_ALREADY_EXISTS_UNSUCCESSFULLY_MESSAGE",
                 "value" => "All data is already up to date",
-                "status_code" => "500"
+                "status_code" => "422"
             ],
             [
                 "language_code" => "de",
                 "key_name" => "RESPONSE_UPDATE_ALREADY_EXISTS_UNSUCCESSFULLY_MESSAGE",
                 "value" => "Alle Daten sind bereits aktuell",
-                "status_code" => "500"
+                "status_code" => "422"
             ],
             [
                 "language_code" => "tr",
@@ -657,6 +657,43 @@ class TranslationSeeder extends Seeder
                 "key_name" => "RESPONSE_FRIENDSHIP_REQUEST_ALREADY_SENT_UNSUCCESSFULLY_MESSAGE",
                 "value" => "Ihre Freundschaftsanfrage wurde bereits gesendet.",
                 "status_code" => "400"
+            ],
+
+            [
+                "language_code" => "tr",
+                "key_name" => "RESPONSE_TASK_ASSIGN_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Görev ataması başarısız oldu.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "en",
+                "key_name" => "RESPONSE_TASK_ASSIGN_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Task assignment failed.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "de",
+                "key_name" => "RESPONSE_TASK_ASSIGN_UNSUCCESSFULLY_MESSAGE",
+                "value" => "Aufgabenzuweisung fehlgeschlagen.",
+                "status_code" => "400"
+            ],
+            [
+                "language_code" => "tr",
+                "key_name" => "RESPONSE_TASK_ASSIGN_SUCCESSFULLY_MESSAGE",
+                "value" => "Görev başarıyla atandı.",
+                "status_code" => "200"
+            ],
+            [
+                "language_code" => "en",
+                "key_name" => "RESPONSE_TASK_ASSIGN_SUCCESSFULLY_MESSAGE",
+                "value" => "Task assigned successfully.",
+                "status_code" => "200"
+            ],
+            [
+                "language_code" => "de",
+                "key_name" => "RESPONSE_TASK_ASSIGN_SUCCESSFULLY_MESSAGE",
+                "value" => "Aufgabe erfolgreich zugewiesen.",
+                "status_code" => "200"
             ],
         ];
 

@@ -27,13 +27,12 @@ class AuthController extends BaseController
     public function login(): ResponseInterface
     {
         if (auth()->loggedIn()) { auth()->logout(); }
-        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'user_login');
 
-        if (!$requestData->status) {
-            return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
-        }
+        $sanitizedData = $this->validationService->validateAndSanitize($this->request->getJSON(true), ['user_login']);
 
-        return ($loginAttempt = $this->authService->login($requestData->data['email'], $requestData->data['password']))
+        $loginAttempt = $this->authService->login($sanitizedData->email, $sanitizedData->password);
+
+        return $loginAttempt
             ? response_success(['token' => $loginAttempt],TranslationKeys::LOGIN_SUCCESS)
             : response_fail(message: TranslationKeys::LOGIN_FAIL);
 
@@ -48,13 +47,9 @@ class AuthController extends BaseController
      */
     public function register(): ResponseInterface
     {
-        $requestData = $this->validationService->validateAndSanitize($this->request->getJSON(true), 'user_register');
+        $sanitizedData = $this->validationService->validateAndSanitize($this->request->getJSON(true), ['user_register']);
 
-        if (!$requestData->status) {
-            return response_fail(message: TranslationKeys::VALIDATION_FAIL, data: $requestData->errors);
-        }
-
-        return $this->authService->register($requestData->data["username"], $requestData->data["email"], $requestData->data["password"])
+        return $this->authService->register($sanitizedData->username, $sanitizedData->email, $sanitizedData->password)
             ? response_success(message: TranslationKeys::REGISTER_SUCCESS)
             : response_fail(TranslationKeys::REGISTER_FAIL);
     }

@@ -3,8 +3,11 @@
 namespace App\Controllers;
 
 use App\Constants\TranslationKeys;
+use App\Exception\ValidationException;
 use App\Services\FriendshipService;
+use App\Services\ValidationService;
 use CodeIgniter\HTTP\ResponseInterface;
+use ReflectionException;
 
 /**
  * Class FriendshipController
@@ -14,16 +17,16 @@ use CodeIgniter\HTTP\ResponseInterface;
  */
 class FriendshipController extends BaseController
 {
-    /** @var FriendshipService $friendshipService Service for handling friendship operations */
+    /** @var FriendshipService $friendshipService */
     private object $friendshipService;
 
-    /**
-     * FriendshipController constructor.
-     * Initializes the FriendshipService instance.
-     */
+    /** @var ValidationService $validationService */
+    private object $validationService;
+
     public function __construct()
     {
         $this->friendshipService = service('friendshipService');
+        $this->validationService = service('validationService');
     }
 
     /**
@@ -42,16 +45,14 @@ class FriendshipController extends BaseController
     /**
      * Lists all incoming friendship requests for the authenticated user.
      *
-     * @param int $limit The maximum number of items to display per page.
-     * @param int $page The current page number being requested.
-     *
      * @return ResponseInterface Response containing a list of incoming requests or a failure message
+     * @throws ValidationException
      */
-    public function listIncomingRequests(int $limit = 10, int $page = 1): ResponseInterface
+    public function listIncomingRequests(): ResponseInterface
     {
-        if ($limit < 1 || $page < 1) { return response_fail(TranslationKeys::VALIDATION_FAIL); }
+        $sanitizedData = $this->validationService->validateAndSanitize($this->request->getJSON(true), ['pagination_rule']);
 
-        return ($incomingRequests = $this->friendshipService->listIncomingFriendRequests($limit, $page))
+        return ($incomingRequests = $this->friendshipService->listIncomingFriendRequests($sanitizedData->limit, $sanitizedData->page))
             ? response_success($incomingRequests)
             : response_fail(TranslationKeys::NOT_FOUND);
     }
@@ -61,6 +62,7 @@ class FriendshipController extends BaseController
      *
      * @param int $request_id ID of the friendship request to accept
      * @return ResponseInterface Response indicating success or failure
+     * @throws ReflectionException
      */
     public function acceptFriendship(int $request_id): ResponseInterface
     {
@@ -74,6 +76,7 @@ class FriendshipController extends BaseController
      *
      * @param int $request_id ID of the friendship request to reject
      * @return ResponseInterface Response indicating success or failure
+     * @throws ReflectionException
      */
     public function rejectFriendship(int $request_id): ResponseInterface
     {
@@ -85,16 +88,14 @@ class FriendshipController extends BaseController
     /**
      * Lists all friendships for the authenticated user.
      *
-     * @param int $limit The maximum number of items to display per page.
-     * @param int $page The current page number being requested.
-     *
      * @return ResponseInterface Response containing a list of friendships or a failure message
+     * @throws ValidationException
      */
-    public function listFriendships(int $limit = 10, int $page = 1): ResponseInterface
+    public function listFriendships(): ResponseInterface
     {
-        if ($limit < 1 || $page < 1) { return response_fail(TranslationKeys::VALIDATION_FAIL); }
+        $sanitizedData = $this->validationService->validateAndSanitize($this->request->getJSON(true), ['pagination_rule']);
 
-        return ($friendships = $this->friendshipService->listFriendships($limit, $page))
+        return ($friendships = $this->friendshipService->listFriendships($sanitizedData->limit, $sanitizedData->page))
             ? response_success($friendships)
             : response_fail();
     }

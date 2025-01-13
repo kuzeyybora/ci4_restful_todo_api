@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\Services\IFriendshipService;
 use App\Models\FriendshipModel;
+use ReflectionException;
 
 class FriendshipService extends BaseService implements IFriendshipService
 {
@@ -29,6 +30,7 @@ class FriendshipService extends BaseService implements IFriendshipService
      * @param int $targetUserId The ID of the user to send the friend request to.
      *
      * @return bool Returns true if the request is successfully sent, false otherwise.
+     * @throws ReflectionException
      */
     public function sendFriendRequest(int $targetUserId): bool
     {
@@ -78,6 +80,7 @@ class FriendshipService extends BaseService implements IFriendshipService
      * @param bool $status True to accept, false to reject.
      *
      * @return bool Returns true if the operation is successful, false otherwise.
+     * @throws ReflectionException
      */
     public function acceptOrRejectFriendshipRequest(int $request_id, bool $status): bool
     {

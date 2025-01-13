@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Constants\TranslationKeys;
 use App\Interfaces\Services\ITaskService;
 use App\Models\FriendshipModel;
 use App\Models\TaskModel;
@@ -11,13 +12,13 @@ use ReflectionException;
 class TaskService extends BaseService implements ITaskService
 {
     /** @var TaskModel */
-    protected $taskModel;
+    protected object $taskModel;
 
     /** @var TaskUserModel */
-    protected $taskUserModel;
+    protected object $taskUserModel;
 
     /** @var FriendshipModel */
-    protected $friendshipModel;
+    protected object $friendshipModel;
     public function __construct()
     {
         $this->taskModel = model('TaskModel');
@@ -54,19 +55,19 @@ class TaskService extends BaseService implements ITaskService
     /**
      * Create a new task and assign it to the logged-in user.
      *
-     * @param array $data The task data (title, description, status).
+     * @param object $data The task data (title, description, status).
      * @return bool True if the task was created and assigned successfully, false otherwise.
      * @throws ReflectionException
      */
-    public function createTask(array $data): bool
+    public function createTask(object $data): bool
     {
         $this->taskModel->db->transStart();
 
         try {
             $taskStatus = $this->taskModel->save([
-                'title' => $data['title'],
-                'description' => $data['description'],
-                'status' => $data['status'],
+                'title' => $data->title,
+                'description' => $data->description,
+                'status' => $data->status,
             ]);
 
             $taskId = $this->taskModel->getInsertID();
@@ -85,7 +86,7 @@ class TaskService extends BaseService implements ITaskService
                 return false;
             }
 
-        } catch (DatabaseException $e) {
+        } catch (DatabaseException) {
             $this->taskModel->db->transRollback();
             return false;
         }
@@ -95,23 +96,26 @@ class TaskService extends BaseService implements ITaskService
      * Update an existing task for the logged-in user.
      *
      * @param int $taskId The ID of the task to update.
-     * @param array $data The new task data (title, description, status).
-     * @return bool True if the task was updated successfully, false otherwise.
+     * @param object $data The new task data (title, description, status).
+     * @return string[] True if the task was updated successfully, false otherwise.
      * @throws ReflectionException
      */
-    public function updateTask(int $taskId, array $data): bool
+    public function updateTask(int $taskId, object $data): array
     {
         $task = $this->taskUserModel->getUserTaskById($this->userId, $taskId);
 
         if (!$task) {
-            return false;
+            return ['status' => false, 'message' => TranslationKeys::NOT_FOUND];
         }
 
-        return $this->taskModel->update($taskId, [
-            'title' => $data['title'] ?? $task->title,
-            'description' => $data['description'] ?? $task->description,
-            'status' => $data['status'] ?? $task->status
-        ]);
+        if ($task == $data) {
+            return ['status' => false, 'message' => TranslationKeys::UPDATE_EXISTS];
+        }
+
+        $updateTask = $this->taskModel->update($taskId, $data);
+        return $updateTask
+            ? ['status' => true, 'message' => TranslationKeys::UPDATE_SUCCESS]
+            : ['status' => false, 'message' => TranslationKeys::UPDATE_FAIL];
     }
 
     /**
@@ -119,18 +123,22 @@ class TaskService extends BaseService implements ITaskService
      *
      * @param int $task_id The task ID.
      * @param int $friend_id The ID of the friend to assign the task to.
-     * @return bool True if the task was successfully assigned, false otherwise.
+     * @return array|bool True if the task was successfully assigned, false otherwise.
      * @throws ReflectionException
      */
-    public function assignTask(int $task_id, int $friend_id): bool
+    public function assignTask(int $task_id, int $friend_id): array|bool
     {
         if (!$this->friendshipModel->checkFriendship($this->userId, $friend_id)) {
-            return false;
+            return ['status' => false, 'message' => TranslationKeys::FRIEND_NOT_FOUND];
         }
+
         if (!$this->taskModel->find($task_id)) {
-            return false;
+            return ['status' => false, 'message' => TranslationKeys::NOT_FOUND];
         }
-        return $this->taskUserModel->assignTask($task_id, $this->userId, $friend_id);
+
+        return $this->taskUserModel->assignTask($task_id, $this->userId, $friend_id)
+            ? ['status' => true, 'message' => TranslationKeys::TASK_ASSIGN_SUCCESFUL]
+            : ['status' => false, 'message' => TranslationKeys::TASK_ASSIGN_UNSUCCESFUL];
     }
 
     /**
@@ -153,7 +161,7 @@ class TaskService extends BaseService implements ITaskService
      */
     public function getAllTasks(int $limit = 10, int $page = 1): ?array
     {
-        return $this->taskModel->findAll();
+        return $this->taskModel->paginate($limit, $page);
     }
 
     /**
@@ -165,6 +173,6 @@ class TaskService extends BaseService implements ITaskService
      */
     public function getAllTaskUsers(int $limit = 10, int $page = 1): ?array
     {
-        return $this->taskUserModel->findAll();
+        return $this->taskUserModel->paginate($limit, $page);
     }
 }
